@@ -3,10 +3,10 @@ const mysql = require("mysql2/promise");
 const config = require('./config')
 const { Op } = require('./Op/OpsSymbols')
 
-// GAl To Delete
+// // GAl To Delete
 // const colorHelpers = require('./helpers/colorHelpers')
-// const {stage, success, links, impText} = colorHelpers
-// console.log(stage('stage'), success('success', links('links'), impText('impText')))
+// const {stage, subject, success, links, impText} = colorHelpers
+// // console.log(stage('stage'), success('success', links('links'), impText('impText')))
 
 
 
@@ -457,14 +457,18 @@ describe("MySequelize Challenge", () => {
     test('get sensetive data', async () => {
 
       const Playlist = new MySequelize(mysqlCon, 'playlists')
-      const hack = await Playlist.findAll({
-        where: {
-          id: "1' UNION SELECT id, name, password FROM users -- "
-        }
-      })
 
-      console.log(hack)
-      // expect(hack.length).toBe(1)
+      let answer
+      try {
+        const hack = await Playlist.findByPk("1' UNION SELECT id, name, password FROM users -- -")
+        answer = hack
+      }
+      catch (err) {
+        answer = err
+      } 
+      expect(() => {throw answer}).toThrowError()
+      expect(answer.errno).toBe(1064)
+
 
 
     })
