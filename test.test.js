@@ -4,8 +4,8 @@ const config = require('./config')
 const { Op } = require('./Op/OpsSymbols')
 
 
-
 // const MySequelize = require('../_cloned-app')
+
 
 let mysqlCon;
 
@@ -63,7 +63,6 @@ describe("MySequelize Challenge", () => {
     test("create test", async () => {
       const User = new MySequelize(mysqlCon, "users");
       await User.create({
-        id: 21,
         name: "test",
         email: 'test@gmail.com',
         password: '123456789',
